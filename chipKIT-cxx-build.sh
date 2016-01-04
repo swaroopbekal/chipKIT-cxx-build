@@ -1618,23 +1618,21 @@ cd win32-image
 zip -9 -r $WORKING_DIR/zips/pic32-tools-$REV-win32-image.zip pic32-tools
 shasum -a 256 $WORKING_DIR/zips/pic32-tools-$REV-win32-image.zip | cut -d ' ' -f 1 > $WORKING_DIR/zips/pic32-tools-$REV-win32-image.sha256
 cd ../$NATIVEIMAGE
-zip -9 -r $WORKING_DIR/zips/pic32-tools-$REV-$NATIVEIMAGE.zip pic32-tools
-shasum -a 256 $WORKING_DIR/zips/pic32-tools-$REV-$NATIVEIMAGE.zip | cut -d ' ' -f 1 > $WORKING_DIR/zips/pic32-tools-$REV-$NATIVEIMAGE.sha256
+tar -czvf $WORKING_DIR/zips/pic32-tools-$REV-$NATIVEIMAGE.tar.gz pic32-tools
+shasum -a 256 $WORKING_DIR/zips/pic32-tools-$REV-$NATIVEIMAGE.tar.gz | cut -d ' ' -f 1 > $WORKING_DIR/zips/pic32-tools-$REV-$NATIVEIMAGE.sha256
 cd ../export-image
-zip -9 -r $WORKING_DIR/zips/pic32-tools-$REV-export-image.zip pic32-tools
-shasum -a 256 $WORKING_DIR/zips/pic32-tools-$REV-export-image.zip | cut -d ' ' -f 1 > $WORKING_DIR/zips/pic32-tools-$REV-export-image.sha256
+tar -czvf $WORKING_DIR/zips/pic32-tools-$REV-export-image.tar.gz pic32-tools
+shasum -a 256 $WORKING_DIR/zips/pic32-tools-$REV-export-image.tar.gz | cut -d ' ' -f 1 > $WORKING_DIR/zips/pic32-tools-$REV-export-image.sha256
 cd ../arm-linux-image
-zip -9 -r $WORKING_DIR/zips/pic32-tools-$REV-arm-linux-image.zip pic32-tools
-shasum -a 256 $WORKING_DIR/zips/pic32-tools-$REV-arm-linux-image.zip | cut -d ' ' -f 1 > $WORKING_DIR/zips/pic32-tools-$REV-arm-linux-image.sha256
+tar -czvf $WORKING_DIR/zips/pic32-tools-$REV-arm-linux-image.tar.gz pic32-tools
+shasum -a 256 $WORKING_DIR/zips/pic32-tools-$REV-arm-linux-image.tar.gz | cut -d ' ' -f 1 > $WORKING_DIR/zips/pic32-tools-$REV-arm-linux-image.sha256
 cd ..
 if [ "x$LINUX32IMAGE" != "x" ]; then
     cd $LINUX32IMAGE
-    zip -9 -r $WORKING_DIR/zips/pic32-tools-$REV-$LINUX32IMAGE.zip pic32-tools
-    shasum -a 256 $WORKING_DIR/zips/pic32-tools-$REV-$LINUX32IMAGE.zip | cut -d ' ' -f 1 > $WORKING_DIR/zips/pic32-tools-$REV-$LINUX32IMAGE.sha256
+    tar -czvf $WORKING_DIR/zips/pic32-tools-$REV-$LINUX32IMAGE.tar.gz pic32-tools
+    shasum -a 256 $WORKING_DIR/zips/pic32-tools-$REV-$LINUX32IMAGE.tar.gz | cut -d ' ' -f 1 > $WORKING_DIR/zips/pic32-tools-$REV-$LINUX32IMAGE.sha256
     cd ..
 fi
-
-shasum -a 256 pic32-tools-chipKIT-cxx-master-Darwin-image.zip | cut -d ' ' -f 1
 
 unset GCC_FOR_TARGET
 unset CC_FOR_TARGET
