@@ -1617,20 +1617,26 @@ REV=${BUILD##pic32-}
 cd win32-image
 zip -9 -r $WORKING_DIR/zips/pic32-tools-$REV-win32-image.zip pic32-tools
 shasum -a 256 $WORKING_DIR/zips/pic32-tools-$REV-win32-image.zip | cut -d ' ' -f 1 > $WORKING_DIR/zips/pic32-tools-$REV-win32-image.sha256
+# remove unwanted *-gdb.py files
+find . -type f -name *-gdb.py | xargs rm
 cd ../$NATIVEIMAGE
 tar -czvf $WORKING_DIR/zips/pic32-tools-$REV-$NATIVEIMAGE.tar.gz pic32-tools
 shasum -a 256 $WORKING_DIR/zips/pic32-tools-$REV-$NATIVEIMAGE.tar.gz | cut -d ' ' -f 1 > $WORKING_DIR/zips/pic32-tools-$REV-$NATIVEIMAGE.sha256
+find . -type f -name *-gdb.py | xargs rm
 cd ../export-image
 tar -czvf $WORKING_DIR/zips/pic32-tools-$REV-export-image.tar.gz pic32-tools
 shasum -a 256 $WORKING_DIR/zips/pic32-tools-$REV-export-image.tar.gz | cut -d ' ' -f 1 > $WORKING_DIR/zips/pic32-tools-$REV-export-image.sha256
+find . -type f -name *-gdb.py | xargs rm
 cd ../arm-linux-image
 tar -czvf $WORKING_DIR/zips/pic32-tools-$REV-arm-linux-image.tar.gz pic32-tools
 shasum -a 256 $WORKING_DIR/zips/pic32-tools-$REV-arm-linux-image.tar.gz | cut -d ' ' -f 1 > $WORKING_DIR/zips/pic32-tools-$REV-arm-linux-image.sha256
+find . -type f -name *-gdb.py | xargs rm
 cd ..
 if [ "x$LINUX32IMAGE" != "x" ]; then
     cd $LINUX32IMAGE
     tar -czvf $WORKING_DIR/zips/pic32-tools-$REV-$LINUX32IMAGE.tar.gz pic32-tools
     shasum -a 256 $WORKING_DIR/zips/pic32-tools-$REV-$LINUX32IMAGE.tar.gz | cut -d ' ' -f 1 > $WORKING_DIR/zips/pic32-tools-$REV-$LINUX32IMAGE.sha256
+    find . -type f -name *-gdb.py | xargs rm
     cd ..
 fi
 
