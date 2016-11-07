@@ -74,7 +74,7 @@ CHECKOUT="yes"
 SKIPLIBS=""
 SKIPNATIVE=""
 SKIPLINUX32=""
-SKIPWIN32="yes"
+SKIPWIN32=""
 SKIPARMLINUX="yes"
 SKIPGRAPHITE="yes"
 SKIPMULTIPLENEWLIB="yes"
@@ -362,7 +362,7 @@ else
     LINUX32IMAGE=""
     LINUX32_HOST_PREFIX=""
     HOSTMACHINE=""
-    BUILDMACHINE=""
+    BUILDMACHINE="--build=x86_64-pc-linux-gnu"
     LIBHOST="--with-host-libstdcxx=-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm"
  export CC_FOR_BUILD="/usr/bin/gcc -m32 -march=i386"
  export CXX_FOR_BUILD="/usr/bin/g++ -m32 -march=i386"
@@ -476,7 +476,7 @@ if [ "x$SKIPNATIVE" == "x" ] ; then
     echo `date` " Making all in $WORKING_DIR/native-build/binutils and installing..." >> $LOGFILE
     make CFLAGS="-O2 -DCHIPKIT_PIC32 -DMCHP_VERSION=${MCHP_VERSION}" all -j4
     assert_success $? "ERROR: making/installing cross binutils build"
-    make CFLAGS="-O2 -DCHIPKIT_PIC32 -DMCHP_VERSION=${MCHP_VERSION}" install
+    make install
     assert_success $? "ERROR: making/installing cross binutils build"
 
     NM_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/bin/pic32-nm"
@@ -699,7 +699,7 @@ if [ "x$SKIPNATIVE" == "x" ] ; then
     STRIP_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/bin/pic32-strip"  \
     AR_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/bin/pic32-ar"  \
     AS_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/pic32mx/bin/as" \
-    LD_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/pic32mx/bin/ld" -j2
+    LD_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/pic32mx/bin/ld" -j4
     assert_success $? "ERROR: making/installing cross build all"
     make install
     assert_success $? "ERROR: making/installing cross build install"
@@ -1094,11 +1094,11 @@ assert_success $? "ERROR: creating directory $WORKING_DIR/win32-build/gmp"
 cd gmp
 
 echo `date` " Configuring win32 gmp build in $WORKING_DIR/win32-build/gmp..." >> $LOGFILE
-CPPFLAGS="-fexceptions" ../../chipKIT-cxx/src48x/gmp/configure --enable-cxx --prefix=$WORKING_DIR/win32-build/host-libs --disable-shared --host=$MINGW32_HOST_PREFIX --disable-nls --with-gnu-ld --disable-debug --disable-rpath --enable-fft "--with-host-libstdcxx=-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm"
+CPPFLAGS="-fexceptions" ../../chipKIT-cxx/src48x/gmp/configure --enable-cxx $BUILDMACHINE --prefix=$WORKING_DIR/win32-build/host-libs --disable-shared --target=$MINGW32_HOST_PREFIX --host=$MINGW32_HOST_PREFIX --disable-nls --with-gnu-ld --disable-debug --disable-rpath --enable-fft "--with-host-libstdcxx=-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm"
 
 # Make win32 gmp and install it
 echo `date` " Making all in $WORKING_DIR/win32-build/gmp and installing..." >> $LOGFILE
-make CPPFLAGS="-fexceptions" all -j
+make CPPFLAGS="-fexceptions" all -j4
 assert_success $? "ERROR: making/installing gmp build"
 make install
 assert_success $? "ERROR: making/installing gmp build"
@@ -1202,13 +1202,13 @@ cd gcc
 # Configure win32 cross compiler
 echo `date` " Configuring win32 cross compiler build in $WORKING_DIR/win32-build..." >> $LOGFILE
 
-AR_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/pic32mx/bin/ar" AS_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/pic32mx/bin/as" LD_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/pic32mx/bin/ld" GCC_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/bin/pic32-gcc" CC_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/bin/pic32-gcc" CXX_FOR_TARGET='pic32-gcc' target_alias=pic32- ../../chipKIT-cxx/src48x/gcc/configure $GCC_CONFIGURE_FLAGS $BUILDMACHINE --host=$MINGW32_HOST_PREFIX "--with-host-libstdcxx=-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm" --prefix=$WORKING_DIR/win32-image/pic32-tools --bindir="$WORKING_DIR/win32-image/pic32-tools/bin/bin" --libexecdir="$WORKING_DIR/win32-image/pic32-tools/bin/bin" --with-libelf=$WORKING_DIR/win32-build/host-libs --with-gmp=$WORKING_DIR/win32-build/host-libs $USE_CLOOG $USE_PPL CFLAGS_FOR_TARGET="-fno-rtti -fno-exceptions -fomit-frame-pointer -DPREFER_SIZE_OVER_SPEED -D__OPTIMIZE_SIZE__ -Os -fshort-wchar -fno-unroll-loops -fno-enforce-eh-specs -ffunction-sections -fdata-sections" XGCC_FLAGS_FOR_TARGET="-fno-rtti -fno-exceptions -fomit-frame-pointer -DPREFER_SIZE_OVER_SPEED -D__OPTIMIZE_SIZE__ -Os -fshort-wchar -fno-unroll-loops -fno-enforce-eh-specs -ffunction-sections -fdata-sections" --enable-cxx-flags="-fno-rtti -fno-exceptions -fomit-frame-pointer -DPREFER_SIZE_OVER_SPEED -D__OPTIMIZE_SIZE__ -Os -fshort-wchar -fno-unroll-loops -fno-enforce-eh-specs -ffunction-sections -fdata-sections" $SUPPORT_HOSTED_LIBSTDCXX
+AR_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/pic32mx/bin/ar" AS_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/pic32mx/bin/as" LD_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/pic32mx/bin/ld" GCC_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/bin/pic32-gcc" CC_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/bin/pic32-gcc" CXX_FOR_TARGET='pic32-gcc' target_alias=pic32- ../../chipKIT-cxx/src48x/gcc/configure $GCC_CONFIGURE_FLAGS $BUILDMACHINE --host=$MINGW32_HOST_PREFIX --prefix=$WORKING_DIR/win32-image/pic32-tools --bindir="$WORKING_DIR/win32-image/pic32-tools/bin/bin" --libexecdir="$WORKING_DIR/win32-image/pic32-tools/bin/bin" --with-libelf=$WORKING_DIR/win32-build/host-libs --with-gmp=$WORKING_DIR/win32-build/host-libs $USE_CLOOG $USE_PPL CFLAGS_FOR_TARGET="-fno-rtti -fno-exceptions -fomit-frame-pointer -DPREFER_SIZE_OVER_SPEED -D__OPTIMIZE_SIZE__ -Os -fshort-wchar -fno-unroll-loops -fno-enforce-eh-specs -ffunction-sections -fdata-sections" XGCC_FLAGS_FOR_TARGET="-fno-rtti -fno-exceptions -fomit-frame-pointer -DPREFER_SIZE_OVER_SPEED -D__OPTIMIZE_SIZE__ -Os -fshort-wchar -fno-unroll-loops -fno-enforce-eh-specs -ffunction-sections -fdata-sections" --enable-cxx-flags="-fno-rtti -fno-exceptions -fomit-frame-pointer -DPREFER_SIZE_OVER_SPEED -D__OPTIMIZE_SIZE__ -Os -fshort-wchar -fno-unroll-loops -fno-enforce-eh-specs -ffunction-sections -fdata-sections" $SUPPORT_HOSTED_LIBSTDCXX  "--with-host-libstdcxx=-static-libstdc++ -Wl,-Bstatic,-lstdc++,-lwinpthread,-Bdynamic,-lm"
 
 assert_success $? "ERROR: configuring win3232 cross build"
 
 # Make cross compiler and install it
 echo `date` " Making all in $WORKING_DIR/win32-build/gcc and installing..." >> $LOGFILE
-make CFLAGS="-Os -DCHIPKIT_PIC32 -D_WIN32_WINNT=0x0501 -DWINVER=0x501" all-gcc \
+make CFLAGS="-O2 -DCHIPKIT_PIC32 -D_WIN32_WINNT=0x0501 -DWINVER=0x501" all-gcc \
 NM_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/bin/pic32-nm" \
 RANLIB_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/bin/pic32-ranlib" \
 STRIP_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/bin/pic32-strip" \
@@ -1216,9 +1216,9 @@ AR_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/bin/pic32-ar" \
 AS_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/pic32mx/bin/as" \
 LD_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/pic32mx/bin/ld" \
 GCC_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/bin/pic32-gcc" \
-CC_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/bin/pic32-gcc" -j4 CXXFLAGS="$CXXFLAGS_FOR_TARGET"
+CC_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/bin/pic32-gcc" CXXFLAGS="-O2" -j4 > win-gcc-build.txt
 assert_success $? "ERROR: making/installing win32 Canadian-cross compiler build"
-make CFLAGS="-Os -DCHIPKIT_PIC32 -D_WIN32_WINNT=0x0501 -DWINVER=0x501" install-gcc
+make CFLAGS="-O2 -DCHIPKIT_PIC32 -D_WIN32_WINNT=0x0501 -DWINVER=0x501" install-gcc
 assert_success $? "ERROR: making/installing win32 Canadian-cross compiler build"
 
 cd ..
