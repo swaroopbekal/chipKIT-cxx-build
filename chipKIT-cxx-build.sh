@@ -40,7 +40,8 @@ if [ "x$MINGW32_HOST_PREFIX" == "x" ]; then
 fi
 
 unset ARMLINUX32_HOST_PREFIX
-ARMLINUX32_HOST_PREFIX=arm-none-linux-gnueabi
+#ARMLINUX32_HOST_PREFIX=arm-none-linux-gnueabi
+ARMLINUX32_HOST_PREFIX=arm-linux-gnueabi
 
 # Does notify-send exist?
 if [ "x$NOTIFY_SEND" == "x" ] ; then
@@ -75,7 +76,7 @@ SKIPLIBS=""
 SKIPNATIVE=""
 SKIPLINUX32=""
 SKIPWIN32=""
-SKIPARMLINUX="yes"
+SKIPARMLINUX=""
 SKIPGRAPHITE="yes"
 SKIPMULTIPLENEWLIB="yes"
 SKIPPLIBIMAGE="yes"
