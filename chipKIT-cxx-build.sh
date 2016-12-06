@@ -97,7 +97,7 @@ CC_FOR_TARGET="$WORKING_DIR/$NATIVEIMAGE/pic32-tools/bin/pic32-gcc"
 CFLAGS="-Os -DCHIPKIT_PIC32"
 
 # Process the arguments
-while getopts b:FNt:Q opt
+while getopts b:FMNt:Q opt
 do
     case "$opt" in
       t)
@@ -113,9 +113,22 @@ do
         cdecho "No checkout"
         CHECKOUT="no"
         ;;
+      M)
+        echo "OS X build only"
+        SKIPLINUX32="yes"
+        SKIPWIN32="yes"
+        SKIPARMLINUX="yes"
+        ;;
      \?) show_usage ;;
     esac
 done
+
+if [ "x$NATIVEIMAGE" != "xDarwin-image" ]; then
+  if [ "x$OSXONLY" == "xyes" ]; then
+    echo "Error: Cannot specify -M option on non-OSX host for now"
+    exit 1
+  fi 
+fi
 
 # Avoid double-date build (YYYYMMDD-YYYYMMDD)
 
@@ -138,6 +151,7 @@ show_usage()
         echo "  -b <tag>      Specify the branch for which you would like to build"
         echo "  -t <tag>      Specify the tag for which you would like to build"
         echo "  -N            No svn checkout build only"
+        echo "  -M            OS X build only"
         echo "  -Q            Show svn checkout (no quiet)"
         echo "  -?            Show this usage message"
         exit 1
