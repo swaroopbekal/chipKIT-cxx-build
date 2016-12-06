@@ -246,7 +246,7 @@ cd $WORKING_DIR
 
 # Check out the source code
 
-GIT_ROOT=https://api.github.com/repos/swaroopbekal
+GIT_ROOT=https://api.github.com/repos/chipKIT32
 GIT_PIC32_NEWLIB_REPO=$GIT_ROOT/pic32-newlib/tarball/master
 GIT_CHIPKIT_CXX_REPO=$GIT_ROOT/chipKIT-cxx/tarball/master
 GIT_PIC32_PART_SUPPORT_REPO=$GIT_ROOT/pic32-part-support/tarball/master
